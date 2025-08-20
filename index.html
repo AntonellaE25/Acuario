@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Acuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Barra de título / menú superior -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="title">Acuario</span>
+      <span class="subtitle"></span>
+    </div>
+    <nav class="menubar">
+      <button class="menu-btn" data-view="search">Búsqueda</button>
+      <button class="menu-btn" data-view="library">Biblioteca</button>
+      <button class="menu-btn" data-view="transfers">Transferencias</button>
+      <button class="menu-btn" data-view="chat">Chat</button>
+      <button class="menu-btn" data-view="tv">Cine/TV</button>
+      <button class="menu-btn" data-view="market">Vende Todo</button>
+      <button class="menu-btn" data-view="news">Noticias</button>
+    </nav>
+    <div class="actions">
+      <button id="fullscreenBtn" title="Pantalla completa (75%/25% → 100%)">⤢</button>
+    </div>
+  </header>
+
+  <!-- Cuerpo: panel izquierdo + vista principal + chat lateral -->
+  <main class="layout">
+    <!-- Panel izquierdo tipo árbol -->
+    <aside class="sidebar">
+      <div class="side-group">
+        <div class="side-title">Secciones</div>
+        <button class="side-item active" data-view="search">🔎 Búsqueda</button>
+        <button class="side-item" data-view="library">📚 Biblioteca</button>
+        <button class="side-item" data-view="transfers">⬇️ Transferencias</button>
+        <button class="side-item" data-view="chat">💬 Chat</button>
+        <button class="side-item" data-view="tv">🎬 Cine/TV</button>
+        <button class="side-item" data-view="market">🛒 Vende Todo</button>
+        <button class="side-item" data-view="news">📰 Noticias</button>
+      </div>
+
+      <div class="side-group">
+        <div class="side-title">Filtros rápidos</div>
+        <button class="side-item small">Audio</button>
+        <button class="side-item small">Video</button>
+        <button class="side-item small">Imágenes</button>
+        <button class="side-item small">Documentos</button>
+        <button class="side-item small">Software</button>
+      </div>
+    </aside>
+
+    <!-- Vista principal (75%) -->
+    <section class="mainview" id="mainview">
+      <!-- Vistas → se alternan con JS -->
+      <!-- BÚSQUEDA -->
+      <div class="view" id="view-search">
+        <div class="pane-title">Búsqueda</div>
+        <div class="searchbar">
+          <input id="searchInput" type="text" placeholder="Escribe lo que quieres encontrar…" />
+          <select id="searchType">
+            <option>Todo</option>
+            <option>Audio</option>
+            <option>Video</option>
+            <option>Imagen</option>
+            <option>Documento</option>
+            <option>Software</option>
+          </select>
+          <button id="searchBtn">Buscar</button>
+        </div>
+        <div class="table-wrap">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Tamaño</th>
+                <th>Calidad</th>
+                <th>Fuentes</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <!-- Relleno de ejemplo -->
+              <tr>
+                <td>Acuario Theme.mp3</td>
+                <td>Audio</td>
+                <td>4.2 MB</td>
+                <td>Alta</td>
+                <td>12</td>
+                <td><button class="pill">Descargar</button></td>
+              </tr>
+              <tr>
+                <td>Trailer_Acuario_Intro.mp4</td>
+                <td>Video</td>
+                <td>45 MB</td>
+                <td>Media</td>
+                <td>7</td>
+                <td><button class="pill">Descargar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BIBLIOTECA -->
+      <div class="view hidden" id="view-library">
+        <div class="pane-title">Biblioteca</div>
+        <div class="toolbar">
+          <button class="pill">Importar</button>
+          <button class="pill">Carpetas…</button>
+          <button class="pill">Limpiar</button>
+        </div>
+        <div class="table-wrap">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Duración</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Mi Lista #1</td><td>Playlist</td><td>—</td><td>2025-08-18</td></tr>
+              <tr><td>Demo Video</td><td>Video</td><td>01:20</td><td>2025-08-18</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TRANSFERENCIAS -->
+      <div class="view hidden" id="view-transfers">
+        <div class="pane-title">Transferencias</div>
+        <div class="table-wrap">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th>Archivo</th>
+                <th>Progreso</th>
+                <th>Velocidad</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="transfersBody">
+              <tr>
+                <td>Acuario Theme.mp3</td>
+                <td><div class="bar"><span style="width:45%"></span></div></td>
+                <td>520 KB/s</td>
+                <td>Descargando</td>
+                <td><button class="pill pill-danger">Cancelar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CHAT (lista de salas por género) -->
+      <div class="view hidden" id="view-chat">
+        <div class="pane-title">Chat — Salas por género</div>
+        <div class="chips">
+          <button class="chip">Música</button>
+          <button class="chip">Anime</button>
+          <button class="chip">Hot</button>
+          <button class="chip">Autos</button>
+          <button class="chip">Gaming</button>
+        </div>
+        <div class="hint">Elige una sala a la derecha para chatear en vivo.</div>
+      </div>
+
+      <!-- CINE/TV (aquí va el player grande) -->
+      <div class="view hidden" id="view-tv">
+        <div class="pane-title">Cine / TV en vivo</div>
+        <div class="player-embed">
+          <!-- Demo de reproductor (pon tu iframe/stream aquí) -->
+          <div class="fake-player">PLAYER</div>
+        </div>
+        <div class="hint">Cada 8–10 minutos puedes insertar tus comerciales.</div>
+      </div>
+
+      <!-- MARKETPLACE -->
+      <div class="view hidden" id="view-market">
+        <div class="pane-title">Vende Todo — Categorías</div>
+        <div class="chips">
+          <button class="chip">Autos</button>
+          <button class="chip">Ropa</button>
+          <button class="chip">Casas</button>
+          <button class="chip">Tecnología</button>
+          <button class="chip">Videojuegos</button>
+        </div>
+        <div class="hint">Publicaciones gratis: 1 foto por 7 días. Premium: más fotos y soporte.</div>
+      </div>
+
+      <!-- NOTICIAS -->
+      <div class="view hidden" id="view-news">
+        <div class="pane-title">Noticias / New</div>
+        <ul class="news">
+          <li>[18-08-2025] Lanzamos la beta “Acuario”.</li>
+          <li>[19-08-2025] Próximamente: P2P híbrido + directorio de publicidad.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Chat lateral (25%) -->
+    <aside class="chatcol" id="chatcol">
+      <div class="chat-head">
+        <div>Chat en vivo</div>
+        <div class="chat-actions">
+          <button id="clearChat" title="Limpiar chat">🧹</button>
+          <button id="toggleChat" title="Ocultar chat">➡</button>
+        </div>
+      </div>
+      <div class="chat-log" id="chatLog">
+        <div class="msg"><b>system</b>: Bienvenido a Acuario. Nada se guarda; es chat efímero.</div>
+      </div>
+      <div class="chat-input">
+        <input id="chatText" type="text" placeholder="Escribe y Enter…" />
+        <button id="sendBtn">Enviar</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Barra de estado inferior -->
+  <footer class="statusbar">
+    <div class="status-left">
+      <span class="led on"></span> Conectado
+    </div>
+    <div class="status-center">Velocidad: 0 KB/s | Usuarios: 1</div>
+    <div class="status-right">Acuario © 2025</div>
+  </footer>
+
+  <script src="app.js"></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
+<script>
+  const API_BASE = "https://TU-API-RENDER.onrender.com"; // <- REEMPLAZA
+  const TRACKERS = ['wss://TU-TRACKER-RENDER.onrender.com']; // <- REEMPLAZA
+
+  // Chat: conectar a Socket.IO
+  const socket = io(API_BASE, { transports: ['websocket'] });
+
+  // WebTorrent client
+  const client = new WebTorrent();
+
+  // Ejemplo: subir archivo al servidor (API)
+  async function uploadToServer(file){
+    const f = new FormData();
+    f.append('file', file);
+    const r = await fetch(`${API_BASE}/api/upload`, { method:'POST', body: f });
+    return r.json(); // {ok, filename, size}
+  }
+
+  // Ejemplo: seed (sembrar) archivo via WebTorrent
+  function seedFiles(fileList){
+    client.seed(fileList, { announce: TRACKERS }, torrent => {
+      console.log('Magnet:', torrent.magnetURI);
+      alert('Magnet:\n' + torrent.magnetURI);
+    });
+  }
+
+  // Ejemplo: descargar por magnet
+  function downloadMagnet(magnet){
+    client.add(magnet, { announce: TRACKERS }, torrent => {
+      torrent.files.forEach(f => {
+        f.getBlobURL((err, url)=>{
+          if(err) return console.error(err);
+          const a = document.createElement('a');
+          a.href = url; a.download = f.name; a.textContent = `Descargar ${f.name}`;
+          document.body.appendChild(a);
+        });
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
